@@ -100,7 +100,7 @@ class ServerSide
         if (true === $this->hasOneToManyRelation) {
             // MySQL 5.7 enables ONLY_FULL_GROUP_BY by default, which breaks the pagination
             // removing ONLY_FULL_GROUP_BY from the current session should do it as a temporary fix.
-            $sqlMode = $this->em->getConnection()->executeQuery('SELECT @@sql_mode')->fetch();
+            $sqlMode = $this->em->getConnection()->executeQuery('SELECT @@sql_mode')->fetchAssociative();
             if (false !== strpos($sqlMode['@@sql_mode'], 'ONLY_FULL_GROUP_BY')) {
                 $this->em->getConnection()->exec('SET sql_mode=(SELECT REPLACE(@@sql_mode, \'ONLY_FULL_GROUP_BY\', \'\'))');
             }
