@@ -17,6 +17,9 @@ class TableBuilder implements TableBuilderInterface
     /** @var null|callable */
     private $conditionCallback;
 
+    /** @var null|callable */
+    private $orderCallback;
+
     private AbstractDataTable $table;
 
     public function __construct(AbstractDataTable $table)
@@ -102,5 +105,15 @@ class TableBuilder implements TableBuilderInterface
     public function getConditionCallback(): ?callable
     {
         return $this->conditionCallback;
+    }
+
+    public function setOrderCallback(callable $callback): void
+    {
+        $this->orderCallback = $callback;
+    }
+
+    public function getOrderCallback(): ?callable
+    {
+        return $this->orderCallback;
     }
 }

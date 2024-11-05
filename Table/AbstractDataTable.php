@@ -33,6 +33,9 @@ abstract class AbstractDataTable
     /** @var null|callable */
     protected $conditionCallback;
 
+    /** @var null|callable */
+    protected $orderCallback;
+
     /**
      * @var null|callable
      *
@@ -111,6 +114,10 @@ abstract class AbstractDataTable
 
         if (null !== $builder->getConditionCallback() && null === $this->getConditionCallback()) {
             $this->setConditionCallback($builder->getConditionCallback());
+        }
+
+        if (null !== $builder->getOrderCallback() && null === $this->getOrderCallback()) {
+            $this->setOrderCallback($builder->getOrderCallback());
         }
     }
 
@@ -311,6 +318,24 @@ abstract class AbstractDataTable
     public function getConditionCallback()
     {
         return $this->conditionCallback;
+    }
+
+    /**
+     * @param callable $callback
+     *
+     * function(\Doctrine\ORM\QueryBuilder $qb) {}
+     */
+    public function setOrderCallback(callable $callback)
+    {
+        $this->orderCallback = $callback;
+    }
+
+    /**
+     * @return callable|null
+     */
+    public function getOrderCallback()
+    {
+        return $this->orderCallback;
     }
 
     /**

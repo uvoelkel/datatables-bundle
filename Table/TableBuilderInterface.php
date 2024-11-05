@@ -20,4 +20,9 @@ interface TableBuilderInterface
      * function(\Doctrine\ORM\QueryBuilder $qb) {}
      */
     public function setConditionCallback(callable $callback): void;
+
+    /**
+     * function(\Doctrine\ORM\QueryBuilder $qb) {}
+     */
+    public function setOrderCallback(callable $callback): void;
 }

@@ -324,12 +324,20 @@ class ServerSide
      */
     private function applyOrder(QueryBuilder $qb)
     {
+        $orders = [];
+
         if (0 === sizeof($this->request->getOrder())) {
             foreach ($this->table->getColumns() as $column) {
                 if (null !== $column->getOptions()['order']) {
                     $qb->addOrderBy($this->getPrefixedField($column), $column->getOptions()['order']);
+                    $orders[] = [$this->getPrefixedField($column), $column->getOptions()['order']];
                 }
             }
+            $callback = $this->table->getOrderCallback();
+            if (null !== $callback) {
+                call_user_func($callback, $qb, $orders);
+            }
+
             return;
         }
 
@@ -342,7 +350,13 @@ class ServerSide
 
             if(true === $column->getOptions()['sortable']) {
                 $qb->addOrderBy($this->getPrefixedField($column), $order['dir']);
+                $orders[] = [$this->getPrefixedField($column), $column->getOptions()['order']];
             }
+        }
+
+        $callback = $this->table->getOrderCallback();
+        if (null !== $callback) {
+            call_user_func($callback, $qb, $orders);
         }
     }
 
